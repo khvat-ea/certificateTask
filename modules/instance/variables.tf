@@ -3,11 +3,6 @@ variable "public_key_path" {
   type = string
 }
 
-variable "private_key_path" {
-  description = "Path to file containing private key"
-  type = string
-}
-
 variable "name" {
   description = "Set name of instace"
   type = string
@@ -26,4 +21,9 @@ variable "ram" {
 variable "image" {
   description = "Enter the name of image"
   type = string
+}
+
+variable "allow_ports" {
+  description = "List of Allowed Ports"
+  type    = list(string)
 }
