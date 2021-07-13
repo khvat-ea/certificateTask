@@ -1,5 +1,5 @@
 ---
-- name: Test template
+- name: Creating dynamic GCP inventory
   hosts: localhost
   become: no
   roles:
