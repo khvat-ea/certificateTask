@@ -1,0 +1,8 @@
+---
+# tasks file for prepareVM_builder
+- name: Ensure all required packages are present
+  apt: pkg={{ item }} update_cache={{ isUpdatePackages }} state={{ expectedStatePackages }}
+  with_items:
+    - git
+    - default-jdk
+    - maven

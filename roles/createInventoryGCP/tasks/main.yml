@@ -1,0 +1,6 @@
+---
+# tasks file for prepareVM_builder
+- name: Create GCP dynamic inventory target file
+  template:
+    src: dynamicInventoryGCP.j2
+    dest: "{{ inventory_GCP_file }}"

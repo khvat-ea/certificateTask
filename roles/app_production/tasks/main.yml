@@ -1,0 +1,8 @@
+---
+# tasks file for app_production
+- name: Copy artifacts from build
+  synchronize:
+    src: "{{ src_path_prj }}"
+    dest: "{{ dest_path_prj }}"
+  delegate_to: "{{ builder_server }}"
+  notify: Tomcat verify

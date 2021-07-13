@@ -1,0 +1,6 @@
+---
+# defaults file for createInventoryGCP
+# the value of the variables is passed with an argument to the CLI "--extra-vars"
+project_ID: ""
+service_account_key: ""
+inventory_GCP_file: ""
