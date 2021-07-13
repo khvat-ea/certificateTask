@@ -1,0 +1,11 @@
+- name: Assembly of the project
+  hosts: build_srv
+  become: yes
+  roles:
+    - build_app
+
+# - name: Launch project
+#   hosts: prod_srv
+#   become: yes
+#   roles:
+#     - app_production

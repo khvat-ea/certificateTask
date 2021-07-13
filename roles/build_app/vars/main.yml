@@ -1,0 +1,4 @@
+---
+# vars file for build_app
+path_to_dockerfile: /tmp/web_app_boxfuse
+docker_image_name: web_app_boxfuse

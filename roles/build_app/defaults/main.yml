@@ -1,0 +1,5 @@
+---
+# defaults file for build_app
+project_ID: ""
+service_account_key: ""
+version_release_app: ""

@@ -1,4 +1,0 @@
----
-# vars file for prepareVM_production
-isUpdatePackages: yes
-expectedStatePackages: present

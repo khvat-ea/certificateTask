@@ -1,13 +1,14 @@
 pipeline {
     environment{
-        keySSH_masterHost = "id_rsa_master"                     // The name of the key pair for SSH binding of the master host with the deployed instances
+        keySSH_masterHost = "id_rsa"                            // The name of the key pair for SSH binding of the master host with the deployed instances
         project_ID = "devops-school-317412"                     // ID of the GCP project in which to work
         inventory_GCP_file = "./dynamicInventoryGCP.gcp.yml"    // GCE Dynamic Inventory file
+        version_release_app = "1.0.0"
     }
 
     agent none
     stages{
-        stage ('Create instanses'){
+        stage ('Certification task'){
             agent{ label 'master' }
             stages{
                 // stage('Create builder and production instance'){
@@ -23,31 +24,35 @@ pipeline {
                 //         }
                 //     }
                 // }
+
                 stage('Create dynamic GCP inventory'){
                     steps{
                         withCredentials([file(credentialsId: 'secret_GCP', variable: 'service_account_file')]) {
                             sh 'cat ${service_account_file} > /tmp/service_account_file.json'                            
                         }
+                        // ansiblePlaybook extras: '--extra-vars "service_account_key=/tmp/service_account_file.json project_ID =${project_ID} inventory_GCP_file=${inventory_GCP_file}"', playbook: 'inventaryGCP.yml'
+
+
                         sh 'ansible-playbook --extra-vars "service_account_key=/tmp/service_account_file.json \
                                                            project_ID=${project_ID} \
                                                            inventory_GCP_file=${inventory_GCP_file}" \
-                                            inventaryGCP.yml'
+                            inventaryGCP.yml'
                         sh 'ansible-inventory --graph -i ${inventory_GCP_file}'
                     }
                 }
-                // stage('Build web application'){
-                //     steps{
-                //         withCredentials([file(credentialsId: 'secret_GCP', variable: 'service_account_file')]) {
-                //             sh 'cat ${service_account_file} > /tmp/service_account_file.json'                            
-                //         }
-                //         sh 'ansible-playbook --extra-vars "service_account_key=/tmp/service_account_file.json \
-                //                                            project_ID=${project_ID} \
-                //                                            inventory_GCP_file=${inventory_GCP_file}" \
-                //                              inventaryGCP.yml'
-                //         sh 'ansible-inventory --graph -i ${inventory_GCP_file}'
-                //         sh 'ls -la'
-                //     }
-                // }
+            
+                stage('Build web application'){
+                    steps{
+                        withCredentials([file(credentialsId: 'secret_GCP', variable: 'service_account_file')]) {
+                            sh 'ansible-playbook    --user root \
+                                                    -i ${inventory_GCP_file} \
+                                                    --extra-vars "service_account_key=$(cat ${service_account_file}) \
+                                                                  project_ID=${project_ID} \
+                                                                  version_release_app=${version_release_app}" \
+                                buildApp.yml'
+                        }
+                    }
+                }
             }
         }
     }

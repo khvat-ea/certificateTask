@@ -1,0 +1,33 @@
+---
+# tasks file for build_app
+- name: Creates directory
+  file:
+    path: "{{ path_to_dockerfile }}"
+    state: directory
+
+- name: Copy the Dockerfile from localhost  to builder host
+  copy:
+    src: Dockerfile
+    dest: "{{ path_to_dockerfile }}"
+  
+
+- name: build_image
+  docker_image:
+    name: "gcr.io/{{ project_ID }}/{{ docker_image_name }}"
+    tag: "{{ version_release_app }}"
+    path: "{{ path_to_dockerfile }}"
+    pull: no
+    state: present
+  
+- name: Docker Login
+  docker_login:
+    registry: "https://gcr.io/{{ project_ID }}"
+    username: _json_key
+    debug: true
+    password: "{{ service_account_key }}"
+      
+- name: Push image to GCP container registry
+  docker_image:
+    name: "gcr.io/{{ project_ID }}/{{ docker_image_name }}"
+    tag: "{{ version_release_app }}"
+    push: yes
