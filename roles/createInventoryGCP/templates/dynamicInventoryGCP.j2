@@ -9,7 +9,7 @@ compose:
 # For Private ip use "networkInterfaces[0].networkIP" 
   ansible_host: networkInterfaces[0].accessConfigs[0].natIP 
 groups: 
-  test_srv: "'test' in name" 
+  devops_srv: "'devops' in name" 
   build_srv: "'build' in name"
   prod_srv: "'prod' in name"
 filters: [] 

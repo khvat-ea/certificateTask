@@ -1,0 +1,5 @@
+- name: Assembly of the project
+  hosts: prod_srv
+  become: yes
+  roles:
+    - prod_app
