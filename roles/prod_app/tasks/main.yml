@@ -5,12 +5,7 @@
 
 - name: Docker Login
   shell: (echo "{{ service_account_key }}" | base64 -d) | docker login -u _json_key --password-stdin https://gcr.io/{{ project_ID }}
-      
-# - name: Pull image from GCP container registry
-#   docker_image:
-#     name: "gcr.io/{{ project_ID }}/{{ docker_image_name }}"
-#     tag: "{{ version_release_app }}"
-
+  
 - name: Start web application
   docker_container:
     name: "{{ container_name }}"

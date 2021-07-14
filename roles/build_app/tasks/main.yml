@@ -20,11 +20,7 @@
     state: present
   
 - name: Docker Login
-  docker_login:
-    registry: "https://gcr.io/{{ project_ID }}"
-    username: _json_key
-    debug: true
-    password: "{{ service_account_key }}"
+  shell: (echo "{{ service_account_key }}" | base64 -d) | docker login -u _json_key --password-stdin https://gcr.io/{{ project_ID }}
       
 - name: Push image to GCP container registry
   docker_image:
